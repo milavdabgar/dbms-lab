@@ -2,7 +2,22 @@
 
 This directory contains the solution for Practical No.3.
 
+## Folder Organization
+It is recommended to organize your work for all practicals in a main folder named `dbms-lab`. Inside it, create separate subfolders for each practical, like `pr1`, `pr2`, `pr3`, etc.
+Example structure:
+```
+dbms-lab/
+├── pr1/
+├── pr2/
+└── pr3/
+    ├── create_tables.sql
+    ├── insert_data.sql
+    ├── ...
+```
+All files related to this practical should be saved in the `pr3` folder.
+
 ## Files
+
 - `create_tables.sql`: The SQL script containing all `CREATE TABLE` commands.
 - `insert_data.sql`: DML commands to insert sample data into the tables.
 - `queries.sql`: Demo SQL queries to retrieve data.
@@ -39,9 +54,9 @@ These scripts work on Windows, Mac, and Linux. Ensure you have Python installed.
 
 1.  **Import Structure:**
     - Open DB Browser.
+    - **Important:** If an existing database is open, click **Close Database** first.
     - **File** -> **Import** -> **Database from SQL file...**.
     - Select `create_tables.sql`. Save as `pr3.db`.
-
 
 2.  **Import Data:**
     - With `pr3.db` open, go to the **Execute SQL** tab.
@@ -58,7 +73,6 @@ These scripts work on Windows, Mac, and Linux. Ensure you have Python installed.
 ```bash
 # Create Database
 sqlite3 pr3.db < create_tables.sql
-
 
 # Insert Data
 sqlite3 pr3.db < insert_data.sql
