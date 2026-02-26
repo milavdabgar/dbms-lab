@@ -1,0 +1,38 @@
+# Database files (SQLite)
+*.db
+*.sqlite
+*.sqlite3
+
+# Oracle temporary files
+*.log
+*.trc
+*.dmp
+
+# Test files
+test_*
+temp_*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+
+# Backup files
+*.bak
+*.backup
