@@ -2,6 +2,11 @@
 
 This practical focuses on database design theory: ER diagrams and normalization (up to 3NF).
 
+## Files
+
+- `pr13.sql` - Oracle version with University and Library database schemas
+- `pr13_sqlite.sql` - SQLite version with University and Library database schemas
+
 ## Overview
 
 **Objectives:**
@@ -135,7 +140,69 @@ Defines whether all entity instances must participate in a relationship.
      │ advised_by                                     taught_by
      │                                                        │
      ▼ 1                                                    M ▼
-┌─────────┐                                          ┌────────────┐
+┌───ER Diagram (Mermaid)
+
+```mermaid
+erDiagram
+    STUDENT ||--o{ ENROLLMENT : "enrolls in"
+    COURSE ||--o{ ENROLLMENT : "has"
+    FACULTY ||--o{ COURSE : "teaches"
+    FACULTY ||--o{ STUDENT : "advises"
+    COURSE ||--o{ ASSIGNMENT : "includes"
+    
+    STUDENT {
+        int student_id PK
+        string first_name
+        string last_name
+        string email UK
+        date date_of_birth
+        date enrollment_date
+        int dept_id FK
+        int semester
+        float cgpa
+    }
+    
+    FACULTY {
+        int faculty_id PK
+        string first_name
+        string last_name
+        string email UK
+        string designation
+        date hire_date
+        float salary
+        int dept_id FK
+    }
+    
+    COURSE {
+        string course_id PK
+        string course_code UK
+        string course_name
+        int credits
+        int semester
+        int faculty_id FK
+        int dept_id FK
+    }
+    
+    ENROLLMENT {
+        int enrollment_id PK
+        int student_id FK
+        string course_id FK
+        string semester
+        string academic_year
+        string grade
+        float attendance_pct
+    }
+    
+    ASSIGNMENT {
+        int assignment_id PK
+        string course_id FK
+        string title
+        int max_marks
+        date due_date
+    }
+```
+
+### ──────┐                                          ┌────────────┐
 │ FACULTY │──────────────teaches─────────────────────│ ASSIGNMENT │
 └─────────┘                                          └────────────┘
 ```
@@ -350,6 +417,92 @@ LIBRARY
 │ B001   │ Database  │ Elmasri,   │ Pearson    │ M101      │ John       │ 2024-01-15  │
 │        │ Systems   │ Navathe    │            │           │            │             │
 └────────┴───────────┴────────────┴────────────┴───────────┴────────────┴─────────────┘
+```
+
+### ER Diagram (Mermaid)
+
+```mermaid
+erDiagram
+    BOOKS ||--o{ BOOK_AUTHORS : "written by"
+    AUTHORS ||--o{ BOOK_AUTHORS : "writes"
+    BOOKS ||--o| PUBLISHERS : "published by"
+    BOOKS ||--o{ BOOK_COPIES : "has copies"
+    BRANCHES ||--o{ BOOK_COPIES : "stores"
+    BOOK_COPIES ||--o{ BORROWINGS : "borrowed as"
+    MEMBERS ||--o{ BORROWINGS : "borrows"
+    
+    BOOKS {
+        int book_id PK
+        string isbn UK
+        string title
+        int publisher_id FK
+        int publication_year
+        string edition
+        string language
+        int pages
+        string category
+    }
+    
+    AUTHORS {
+        int author_id PK
+        string first_name
+        string last_name
+        string biography
+        string country
+        date birth_date
+    }
+    
+    BOOK_AUTHORS {
+        int book_id FK
+        int author_id FK
+        int author_order
+    }
+    
+    PUBLISHERS {
+        int publisher_id PK
+        string publisher_name UK
+        string address
+        string city
+        string phone
+        string email
+    }
+    
+    BRANCHES {
+        int branch_id PK
+        string branch_name UK
+        string address
+        string city
+        string manager_name
+    }
+    
+    MEMBERS {
+        int member_id PK
+        string first_name
+        string last_name
+        string email UK
+        string phone
+        date membership_date
+        string membership_type
+    }
+    
+    BOOK_COPIES {
+        int copy_id PK
+        int book_id FK
+        int branch_id FK
+        string copy_number
+        string status
+        date purchase_date
+    }
+    
+    BORROWINGS {
+        int borrowing_id PK
+        int copy_id FK
+        int member_id FK
+        date borrow_date
+        date due_date
+        date return_date
+        float fine_amount
+    }
 ```
 
 ### After Normalization (3NF)
