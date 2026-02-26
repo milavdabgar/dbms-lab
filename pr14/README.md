@@ -39,12 +39,14 @@ A **transaction** is a logical unit of work containing one or more SQL statement
 Makes all changes in the current transaction permanent.
 
 **Oracle:**
+
 ```sql
 UPDATE employees SET salary = salary * 1.10 WHERE department_id = 50;
 COMMIT;  -- Changes are now permanent
 ```
 
 **SQLite:**
+
 ```sql
 BEGIN TRANSACTION;
 UPDATE employees SET salary = salary * 1.10 WHERE department_id = 50;
@@ -52,6 +54,7 @@ COMMIT;  -- Changes are now permanent
 ```
 
 **Key Differences:**
+
 - **Oracle:** Autocommit OFF by default (must explicitly COMMIT)
 - **SQLite:** Autocommit ON by default (must use BEGIN TRANSACTION for manual control)
 
@@ -60,6 +63,7 @@ COMMIT;  -- Changes are now permanent
 Undoes all changes in the current transaction.
 
 **Oracle:**
+
 ```sql
 DELETE FROM employees WHERE employee_id = 999;
 -- Realize this was a mistake!
@@ -67,6 +71,7 @@ ROLLBACK;  -- Deletion is undone
 ```
 
 **SQLite:**
+
 ```sql
 BEGIN TRANSACTION;
 DELETE FROM employees WHERE employee_id = 999;
@@ -79,6 +84,7 @@ ROLLBACK;  -- Deletion is undone
 Creates a named point within a transaction to which you can later roll back.
 
 **Oracle:**
+
 ```sql
 INSERT INTO employees VALUES (301, 'John', 'Doe', ...);
 SAVEPOINT after_insert;
@@ -99,6 +105,7 @@ ROLLBACK;
 ```
 
 **SQLite:**
+
 ```sql
 BEGIN TRANSACTION;
 
@@ -124,6 +131,7 @@ COMMIT;
 Both operations must succeed or both must fail:
 
 **Oracle:**
+
 ```sql
 -- Deduct from Account A:
 UPDATE accounts SET balance = balance - 100 WHERE account_id = 'A001';
@@ -139,6 +147,7 @@ ROLLBACK;
 ```
 
 **SQLite:**
+
 ```sql
 BEGIN TRANSACTION;
 
@@ -158,6 +167,7 @@ ROLLBACK;
 ### Example 2: Multi-step Data Entry with Savepoints
 
 **Oracle:**
+
 ```sql
 -- Insert student:
 INSERT INTO students VALUES (101, 'John', 'Doe', 'john@example.com');
@@ -198,6 +208,7 @@ For complete DCL documentation, see [Practical 11](../pr11/README.md).
 ### Quick Reference
 
 **GRANT:**
+
 ```sql
 -- System privileges:
 GRANT CREATE SESSION, CREATE TABLE TO username;
@@ -213,6 +224,7 @@ GRANT SELECT ON table_name TO username WITH GRANT OPTION;
 ```
 
 **REVOKE:**
+
 ```sql
 -- System privileges:
 REVOKE CREATE TABLE FROM username;
@@ -229,6 +241,7 @@ REVOKE ALL ON table_name FROM username;
 ## Transaction Best Practices
 
 ### 1. Keep Transactions Short
+
 ```sql
 -- BAD: Long-running transaction
 BEGIN TRANSACTION;
@@ -244,6 +257,7 @@ COMMIT;
 ```
 
 ### 2. Use Savepoints for Complex Operations
+
 ```sql
 BEGIN TRANSACTION;
     INSERT INTO table1 ...;
@@ -258,6 +272,7 @@ COMMIT;
 ```
 
 ### 3. Handle Errors Properly
+
 ```sql
 -- Oracle PL/SQL:
 BEGIN
@@ -272,6 +287,7 @@ END;
 ```
 
 ### 4. Don't Mix DDL and DML in Oracle
+
 ```sql
 -- DDL (CREATE, ALTER, DROP) causes implicit COMMIT in Oracle
 -- This is automatically committed:
@@ -303,6 +319,7 @@ SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 ## Common Transaction Patterns
 
 ### Pattern 1: Try-Commit-Rollback
+
 ```sql
 BEGIN TRANSACTION;
     BEGIN TRY
@@ -316,6 +333,7 @@ END;
 ```
 
 ### Pattern 2: Incremental Savepoints
+
 ```sql
 BEGIN TRANSACTION;
 FOR each operation DO
@@ -333,6 +351,7 @@ COMMIT;
 ## Viewing Transaction Status
 
 ### Oracle
+
 ```sql
 -- Check if transaction is active:
 SELECT * FROM V$TRANSACTION;
@@ -342,6 +361,7 @@ SELECT * FROM V$LOCK WHERE SID = (SELECT SID FROM V$SESSION WHERE AUDSID = USERE
 ```
 
 ### SQLite
+
 ```sql
 -- SQLite doesn't expose transaction state directly
 -- Check via PRAGMA:
@@ -351,12 +371,14 @@ PRAGMA compile_options;  -- Look for ENABLE_API_ARMOR
 ## Usage
 
 ### Oracle
+
 ```bash
 sqlplus username/password@database
 @pr14_tcl_oracle.sql
 ```
 
 ### SQLite
+
 ```bash
 sqlite3 test.db < pr14_tcl_sqlite.sql
 ```
@@ -364,20 +386,24 @@ sqlite3 test.db < pr14_tcl_sqlite.sql
 ## Troubleshooting
 
 ### "cannot commit - no transaction is active"
+
 - Oracle: Transaction starts automatically with first DML
 - SQLite: Must use BEGIN TRANSACTION explicitly
 
 ### "deadlock detected"
+
 - Two transactions waiting for each other's locks
 - One transaction will be rolled back automatically
 - Retry the rolled-back transaction
 
 ### "transaction rolled back" after DDL (Oracle)
+
 - DDL statements cause implicit COMMIT
 - Subsequent DML is a new transaction
 - Don't mix DDL and DML in critical transactions
 
 ### Changes not visible to other sessions
+
 - Changes are not committed yet
 - Use COMMIT to make changes visible
 - Check transaction isolation level

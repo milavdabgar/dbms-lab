@@ -5,6 +5,7 @@ Complete setup guide for running SQL practicals on **Windows 11, Linux, and macO
 ## 📋 Overview
 
 All practicals have **two versions**:
+
 - **Oracle version** - Strictly follows GTU lab manual guidelines
 - **SQLite version** - Cross-platform alternative for practice
 
@@ -23,17 +24,20 @@ All practicals have **two versions**:
 ### Oracle Database Setup
 
 #### Windows 11
+
 1. Download Oracle Database Express Edition (XE) from:
    - https://www.oracle.com/database/technologies/xe-downloads.html
 2. Run installer: `OracleXE213_Win64.zip`
 3. Set password for SYS and SYSTEM users
 4. Add to PATH: `C:\app\oracle\product\21c\dbhomeXE\bin`
 5. Verify:
+
    ```cmd
    sqlplus sys as sysdba
    ```
 
 #### Linux (Ubuntu/Debian)
+
 ```bash
 # Download Oracle XE RPM
 wget https://download.oracle.com/otn-pub/otn_software/db-express/oracle-database-xe-21c-1.0-1.ol8.x86_64.rpm
@@ -52,6 +56,7 @@ export PATH=$PATH:$ORACLE_HOME/bin
 ```
 
 #### macOS (Intel & Apple Silicon)
+
 ```bash
 # Option 1: Docker (Recommended for Apple Silicon)
 docker pull container-registry.oracle.com/database/express:21.3.0-xe
@@ -68,6 +73,7 @@ brew install instantclient-sqlplus
 ### SQLite Setup
 
 #### Windows 11
+
 1. Download from: https://www.sqlite.org/download.html
    - Get: `sqlite-tools-win32-x86-*.zip`
 2. Extract to: `C:\sqlite\`
@@ -75,11 +81,13 @@ brew install instantclient-sqlplus
    - Windows Search → "Environment Variables"
    - Edit System PATH → Add `C:\sqlite\`
 4. Verify:
+
    ```cmd
    sqlite3 --version
    ```
 
 #### Linux
+
 ```bash
 # Ubuntu/Debian
 sudo apt update
@@ -96,6 +104,7 @@ sqlite3 --version
 ```
 
 #### macOS
+
 ```bash
 # SQLite comes pre-installed, or install latest:
 brew install sqlite
@@ -135,6 +144,7 @@ dbms-lab/
 ### Practical 4: DML Commands
 
 #### Oracle Version (Windows CMD/PowerShell)
+
 ```cmd
 REM Create database schema
 sqlplus username/password@localhost:1521/XE @pr4\hrms_schema.sql
@@ -144,6 +154,7 @@ sqlplus username/password@localhost:1521/XE @pr4\pr4.sql
 ```
 
 #### Oracle Version (Linux/Mac Terminal)
+
 ```bash
 # Create database schema
 sqlplus username/password@localhost:1521/XE @pr4/hrms_schema.sql
@@ -153,6 +164,7 @@ sqlplus username/password@localhost:1521/XE @pr4/pr4.sql
 ```
 
 #### SQLite Version (All Platforms)
+
 ```bash
 # Windows CMD/PowerShell, Linux, macOS - same commands:
 cd pr4
@@ -173,6 +185,7 @@ sqlite> .quit
 ### Practical 5: Date Functions
 
 #### Oracle Version
+
 ```bash
 # Windows
 sqlplus username/password@localhost:1521/XE @pr5\pr5.sql
@@ -182,6 +195,7 @@ sqlplus username/password@localhost:1521/XE @pr5/pr5.sql
 ```
 
 #### SQLite Version (All Platforms)
+
 ```bash
 sqlite3 date_functions.db < pr5/pr5_sqlite.sql
 
@@ -194,6 +208,7 @@ sqlite3 date_functions.db "SELECT * FROM ..."
 ### Practical 6: Numeric & Character Functions
 
 #### Oracle Version
+
 ```bash
 # Windows
 sqlplus username/password@localhost:1521/XE @pr6\pr6.sql
@@ -203,6 +218,7 @@ sqlplus username/password@localhost:1521/XE @pr6/pr6.sql
 ```
 
 #### SQLite Version (All Platforms)
+
 ```bash
 sqlite3 functions.db < pr6/pr6_sqlite.sql
 ```
@@ -212,6 +228,7 @@ sqlite3 functions.db < pr6/pr6_sqlite.sql
 ## ✅ Verification & Testing
 
 ### Test Oracle Installation
+
 ```sql
 -- Connect to Oracle
 sqlplus / as sysdba
@@ -224,6 +241,7 @@ SELECT 'Hello Oracle' FROM DUAL;
 ```
 
 ### Test SQLite Installation
+
 ```bash
 # Create test database
 sqlite3 test.db
@@ -274,6 +292,7 @@ SELECT date('now', '+3 months');
 All Oracle scripts strictly follow GTU lab manual requirements:
 
 ### Practical 4 (DML Commands)
+
 ✅ INSERT - Both value method and address method  
 ✅ UPDATE - Selected rows and all rows  
 ✅ DELETE - Selected rows and all rows  
@@ -282,6 +301,7 @@ All Oracle scripts strictly follow GTU lab manual requirements:
 ✅ Comparison Operators - BETWEEN, IN, LIKE  
 
 ### Practical 5 (Date Functions)
+
 ✅ ADD_MONTHS - Add/subtract months from date  
 ✅ MONTHS_BETWEEN - Difference between dates  
 ✅ LAST_DAY - Last day of month  
@@ -291,6 +311,7 @@ All Oracle scripts strictly follow GTU lab manual requirements:
 ✅ SYSDATE - Current system date  
 
 ### Practical 6 (Functions)
+
 ✅ **Numeric**: ABS, CEIL, FLOOR, POWER, MOD, ROUND, TRUNC, SQRT, EXP  
 ✅ **Character**: INITCAP, UPPER, LOWER, LENGTH, SUBSTR, INSTR, LTRIM, RTRIM, LPAD, RPAD, REPLACE, TRANSLATE, ASCII  
 
@@ -301,6 +322,7 @@ All Oracle scripts strictly follow GTU lab manual requirements:
 ### Windows-Specific Issues
 
 #### Oracle: "ORA-12560: TNS:protocol adapter error"
+
 ```cmd
 REM Check Oracle service is running
 net start OracleServiceXE
@@ -312,6 +334,7 @@ REM Should show: C:\app\oracle\product\21c\dbhomeXE
 ```
 
 #### SQLite: "sqlite3 is not recognized"
+
 ```cmd
 REM Add to PATH permanently
 setx PATH "%PATH%;C:\sqlite\"
@@ -321,6 +344,7 @@ C:\sqlite\sqlite3.exe database.db
 ```
 
 #### File Path Issues on Windows
+
 ```cmd
 REM Use forward slashes (/) or double backslashes (\\)
 sqlplus user/pass@XE @pr4/pr4.sql       ✅ Works
@@ -335,6 +359,7 @@ sqlite3 db.db < pr5\pr5_sqlite.sql      ✅ Works
 ### Linux/Mac-Specific Issues
 
 #### Oracle: Permission Denied
+
 ```bash
 # Set execute permissions
 chmod +x /opt/oracle/product/21c/dbhomeXE/bin/*
@@ -345,6 +370,7 @@ lsnrctl start
 ```
 
 #### SQLite: Command Not Found
+
 ```bash
 # Install or check PATH
 which sqlite3
@@ -355,12 +381,14 @@ brew install sqlite       # macOS
 ### Cross-Platform: Foreign Key Errors
 
 **SQLite:**
+
 ```sql
 -- MUST enable foreign keys for each connection
 PRAGMA foreign_keys = ON;
 ```
 
 **Check if enabled:**
+
 ```sql
 PRAGMA foreign_keys;  -- Should return 1
 ```
@@ -370,28 +398,38 @@ PRAGMA foreign_keys;  -- Should return 1
 ## 📝 Student Instructions for Windows 11
 
 ### Quick Start (Oracle)
+
 1. Open Command Prompt or PowerShell
 2. Navigate to lab folder:
+
    ```cmd
    cd C:\Users\YourName\dbms-lab
    ```
+
 3. Connect to Oracle:
+
    ```cmd
    sqlplus system/password@localhost:1521/XE
    ```
+
 4. Run practical:
+
    ```sql
    @pr4\hrms_schema.sql
    @pr4\pr4.sql
    ```
 
 ### Quick Start (SQLite)
+
 1. Open Command Prompt or PowerShell
 2. Navigate to lab folder:
+
    ```cmd
    cd C:\Users\YourName\dbms-lab\pr4
    ```
+
 3. Run practical:
+
    ```cmd
    sqlite3 hrms.db < hrms_schema_sqlite.sql
    sqlite3 hrms.db < pr4_sqlite.sql
@@ -402,14 +440,17 @@ PRAGMA foreign_keys;  -- Should return 1
 ## 📚 Additional Resources
 
 ### Oracle Documentation
+
 - SQL Language Reference: https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/
 - SQL*Plus User's Guide: https://docs.oracle.com/en/database/oracle/oracle-database/21/sqpug/
 
 ### SQLite Documentation
+
 - Official Docs: https://www.sqlite.org/docs.html
 - SQL Syntax: https://www.sqlite.org/lang.html
 
 ### GTU Resources
+
 - Lab Manual: Refer to `manual/DBMS_DI04032011 LAB MANUAL1.md`
 - W3Schools SQL: https://www.w3schools.com/sql/
 - GeeksforGeeks: https://www.geeksforgeeks.org/sql-tutorial/
@@ -430,6 +471,7 @@ PRAGMA foreign_keys;  -- Should return 1
 ## 🆘 Getting Help
 
 If you encounter issues:
+
 1. Check the error message carefully
 2. Refer to the README.md in each practical folder
 3. Verify software installation (Oracle/SQLite)
