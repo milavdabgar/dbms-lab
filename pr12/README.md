@@ -9,11 +9,13 @@ The constraints are already implemented in [pr4/hrms_schema.sql](../pr4/hrms_sch
 ## Three Types of Integrity
 
 ### 1. Domain Integrity
+
 Ensures values in a column conform to a specified data type and range.
 
 **Implementation:** `CHECK` constraints, `NOT NULL`, data types
 
 **Oracle Examples:**
+
 ```sql
 CREATE TABLE employees (
     employee_id NUMBER(6) PRIMARY KEY,
@@ -25,6 +27,7 @@ CREATE TABLE employees (
 ```
 
 **SQLite Examples:**
+
 ```sql
 CREATE TABLE employees (
     employee_id INTEGER PRIMARY KEY,
@@ -36,11 +39,13 @@ CREATE TABLE employees (
 ```
 
 ### 2. Entity Integrity
+
 Ensures each row is uniquely identifiable.
 
 **Implementation:** `PRIMARY KEY`, `UNIQUE` constraints
 
 **Examples:**
+
 ```sql
 -- PRIMARY KEY (one per table):
 CREATE TABLE departments (
@@ -63,11 +68,13 @@ CREATE TABLE employees (
 ```
 
 ### 3. Referential Integrity
+
 Ensures relationships between tables are maintained.
 
 **Implementation:** `FOREIGN KEY` constraints
 
 **Oracle Examples:**
+
 ```sql
 CREATE TABLE employees (
     employee_id NUMBER(6) PRIMARY KEY,
@@ -81,6 +88,7 @@ CREATE TABLE employees (
 ```
 
 **SQLite Examples:**
+
 ```sql
 PRAGMA foreign_keys = ON;  -- Must enable in SQLite
 
@@ -117,6 +125,7 @@ CREATE TABLE employees (
 ## Adding Constraints
 
 ### During Table Creation
+
 ```sql
 CREATE TABLE employees (
     employee_id NUMBER(6) CONSTRAINT emp_pk PRIMARY KEY,
@@ -125,6 +134,7 @@ CREATE TABLE employees (
 ```
 
 ### After Table Creation (ALTER TABLE)
+
 ```sql
 -- Add PRIMARY KEY:
 ALTER TABLE employees
@@ -151,6 +161,7 @@ MODIFY email VARCHAR2(50) NOT NULL;
 ## Viewing Constraints
 
 ### Oracle
+
 ```sql
 -- View all constraints:
 SELECT constraint_name, constraint_type, table_name
@@ -164,6 +175,7 @@ WHERE table_name = 'EMPLOYEES';
 ```
 
 ### SQLite
+
 ```sql
 -- View table schema with constraints:
 .schema employees
@@ -176,12 +188,14 @@ WHERE type='table' AND name='employees';
 ## Dropping Constraints
 
 ### Oracle
+
 ```sql
 ALTER TABLE employees DROP CONSTRAINT emp_sal_ck;
 ALTER TABLE employees DROP PRIMARY KEY CASCADE;
 ```
 
 ### SQLite
+
 **⚠️ SQLite Limitation:** Cannot drop constraints directly. Must recreate table.
 
 ```sql
@@ -241,18 +255,22 @@ sqlite3 test.db < pr4/hrms_schema_sqlite.sql
 ## Troubleshooting
 
 ### "integrity constraint violated - parent key not found"
+
 - Trying to insert foreign key value that doesn't exist in parent table
 - Insert parent record first, or use existing parent key
 
 ### "integrity constraint violated - child record found"
+
 - Trying to delete parent record that has children
 - Delete children first, or use ON DELETE CASCADE
 
 ### "check constraint violated"
+
 - Value doesn't meet CHECK constraint condition
 - Verify value satisfies the constraint expression
 
 ### "unique constraint violated"
+
 - Trying to insert duplicate value in PRIMARY KEY or UNIQUE column
 - Check existing values before inserting
 

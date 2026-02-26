@@ -5,6 +5,7 @@ This practical focuses on database design theory: ER diagrams and normalization 
 ## Overview
 
 **Objectives:**
+
 1. Design E-R diagrams for database management systems
 2. Convert ER diagrams to relational schema
 3. Apply normalization techniques (1NF, 2NF, 3NF)
@@ -15,12 +16,14 @@ This practical focuses on database design theory: ER diagrams and normalization 
 ### ER Diagram Components
 
 #### 1. Entity
+
 A real-world object or concept (person, place, thing, event).
 
 - **Notation:** Rectangle
 - **Example:** Student, Course, Professor
 
 #### 2. Attribute
+
 Properties or characteristics of an entity.
 
 - **Simple Attribute:** Cannot be subdivided (e.g., Age)
@@ -30,17 +33,20 @@ Properties or characteristics of an entity.
 - **Key Attribute:** Uniquely identifies entity (underlined)
 
 **Notation:**
+
 - Simple: Oval
 - Composite: Oval with connected sub-ovals
 - Multivalued: Double oval
 - Derived: Dashed oval
 
 #### 3. Relationship
+
 Association between two or more entities.
 
 **Notation:** Diamond
 
 #### 4. Cardinality
+
 Number of entity instances participating in a relationship.
 
 | Cardinality | Notation | Example |
@@ -51,6 +57,7 @@ Number of entity instances participating in a relationship.
 | Many-to-Many (M:N) | M:N | Students ↔ Courses |
 
 #### 5. Participation
+
 Defines whether all entity instances must participate in a relationship.
 
 - **Total Participation:** Every entity must participate (double line)
@@ -61,6 +68,7 @@ Defines whether all entity instances must participate in a relationship.
 ### Entities and Attributes
 
 **STUDENT**
+
 - student_id (PK)
 - first_name
 - last_name
@@ -69,6 +77,7 @@ Defines whether all entity instances must participate in a relationship.
 - enrollment_date
 
 **COURSE**
+
 - course_id (PK)
 - course_code
 - course_name
@@ -76,6 +85,7 @@ Defines whether all entity instances must participate in a relationship.
 - department
 
 **FACULTY**
+
 - faculty_id (PK)
 - first_name
 - last_name
@@ -84,6 +94,7 @@ Defines whether all entity instances must participate in a relationship.
 - hire_date
 
 **ENROLLMENT** (Associative Entity)
+
 - student_id (FK)
 - course_id (FK)
 - semester
@@ -91,6 +102,7 @@ Defines whether all entity instances must participate in a relationship.
 - grade
 
 **ASSIGNMENT** (Associative Entity)
+
 - faculty_id (FK)
 - course_id (FK)
 - semester
@@ -186,6 +198,7 @@ CREATE TABLE assignments (
 ### What is Normalization?
 
 **Normalization** is the process of organizing data to:
+
 - Minimize redundancy
 - Eliminate insertion, update, and deletion anomalies
 - Ensure data integrity
@@ -200,11 +213,13 @@ CREATE TABLE assignments (
 ### First Normal Form (1NF)
 
 **Rules:**
+
 1. Each column contains atomic (indivisible) values
 2. Each row is unique
 3. No repeating groups or arrays
 
 **Example - NOT in 1NF:**
+
 ```
 STUDENT_COURSES
 ┌────────────┬─────────────┬──────────────────────────┐
@@ -216,6 +231,7 @@ STUDENT_COURSES
 ```
 
 **Converted to 1NF:**
+
 ```
 STUDENT_COURSES
 ┌────────────┬─────────────┬───────────┐
@@ -232,10 +248,12 @@ STUDENT_COURSES
 ### Second Normal Form (2NF)
 
 **Rules:**
+
 1. Must be in 1NF
 2. No partial dependencies (all non-key attributes must depend on the entire primary key)
 
 **Example - In 1NF but NOT in 2NF:**
+
 ```
 ENROLLMENT (Composite PK: StudentID + CourseID)
 ┌────────────┬──────────┬─────────────┬─────────────┬────────┐
@@ -250,6 +268,7 @@ ENROLLMENT (Composite PK: StudentID + CourseID)
 **Problem:** CourseName depends only on CourseID (partial dependency)
 
 **Converted to 2NF:**
+
 ```
 STUDENTS
 ┌────────────┬─────────────┐
@@ -278,10 +297,12 @@ ENROLLMENT
 ### Third Normal Form (3NF)
 
 **Rules:**
+
 1. Must be in 2NF
 2. No transitive dependencies (non-key attributes must not depend on other non-key attributes)
 
 **Example - In 2NF but NOT in 3NF:**
+
 ```
 STUDENTS
 ┌────────────┬─────────────┬────────────┬─────────────────┐
@@ -297,6 +318,7 @@ STUDENTS
 StudentID → DeptCode → DeptName
 
 **Converted to 3NF:**
+
 ```
 STUDENTS
 ┌────────────┬─────────────┬────────────┐
@@ -333,6 +355,7 @@ LIBRARY
 ### After Normalization (3NF)
 
 **BOOKS:**
+
 ```sql
 CREATE TABLE books (
     book_id VARCHAR2(10) PRIMARY KEY,
@@ -345,6 +368,7 @@ CREATE TABLE books (
 ```
 
 **AUTHORS:**
+
 ```sql
 CREATE TABLE authors (
     author_id NUMBER PRIMARY KEY,
@@ -354,6 +378,7 @@ CREATE TABLE authors (
 ```
 
 **BOOK_AUTHORS** (M:N relationship):
+
 ```sql
 CREATE TABLE book_authors (
     book_id VARCHAR2(10),
@@ -365,6 +390,7 @@ CREATE TABLE book_authors (
 ```
 
 **PUBLISHERS:**
+
 ```sql
 CREATE TABLE publishers (
     publisher_id NUMBER PRIMARY KEY,
@@ -374,6 +400,7 @@ CREATE TABLE publishers (
 ```
 
 **MEMBERS:**
+
 ```sql
 CREATE TABLE members (
     member_id VARCHAR2(10) PRIMARY KEY,
@@ -385,6 +412,7 @@ CREATE TABLE members (
 ```
 
 **BORROWINGS:**
+
 ```sql
 CREATE TABLE borrowings (
     borrowing_id NUMBER PRIMARY KEY,
@@ -399,6 +427,7 @@ CREATE TABLE borrowings (
 ```
 
 **BRANCHES:**
+
 ```sql
 CREATE TABLE branches (
     branch_id NUMBER PRIMARY KEY,
@@ -409,6 +438,7 @@ CREATE TABLE branches (
 ```
 
 **BOOK_COPIES:**
+
 ```sql
 CREATE TABLE book_copies (
     copy_id NUMBER PRIMARY KEY,
@@ -433,6 +463,7 @@ CREATE TABLE book_copies (
 ### When to Denormalize
 
 Sometimes, for performance reasons, controlled denormalization is acceptable:
+
 - Read-heavy applications
 - Data warehousing
 - Reporting databases

@@ -3,13 +3,16 @@
 This directory contains solutions for Practical No. 6 - Implementing SQL queries using Numeric and Character functions.
 
 ## Objective
+
 To implement SQL queries using:
+
 1. **Numeric functions**: ABS, CEIL, POWER, MOD, ROUND, TRUNC, SQRT, EXP, FLOOR
 2. **Character functions**: INITCAP, LOWER, UPPER, LTRIM, RTRIM, REPLACE, SUBSTR, INSTR, LENGTH, LPAD, RPAD, ASCII, TRANSLATE
 
 ## Files
 
 ### Oracle Database Version
+
 - **`pr6.sql`** - Complete SQL queries for Oracle Database
   - Full implementation of all numeric functions
   - Full implementation of all character functions
@@ -17,6 +20,7 @@ To implement SQL queries using:
   - Requires Oracle SQL*Plus, SQL Developer, or Oracle Live SQL
 
 ### SQLite Database Version
+
 - **`pr6_sqlite.sql`** - SQLite-compatible queries
   - SQLite equivalents and workarounds for missing functions
   - Creates sample employee data for testing
@@ -26,6 +30,7 @@ To implement SQL queries using:
 ## Required Practical Queries
 
 ### Numeric Functions (11 Queries)
+
 1. Find the absolute value of -15
 2. Find the square root of 81
 3. Find the value for 3 raised to power 4
@@ -39,6 +44,7 @@ To implement SQL queries using:
 11. Find e raised to power 4
 
 ### Character Functions (16 Queries)
+
 1. Count characters in 'Computer Engineering'
 2. Count characters in each employee's name
 3. Convert 'COMPUTER' to lowercase
@@ -61,11 +67,13 @@ To implement SQL queries using:
 ### Option 1: Oracle Database (As per Lab Manual)
 
 #### Prerequisites
+
 - Oracle Database (11g, 12c, 18c, 19c, or 21c)
 - Oracle SQL*Plus or SQL Developer
 - HR schema (typically installed by default)
 
 #### Using SQL*Plus
+
 ```bash
 # Connect to Oracle
 sqlplus username/password@database
@@ -79,12 +87,14 @@ SQL> SELECT ABS(-15) FROM DUAL;
 ```
 
 #### Using SQL Developer
+
 1. Open Oracle SQL Developer
 2. Connect to your database
 3. Open `pr6.sql` file
 4. Run entire script (F5) or individual queries (Ctrl+Enter)
 
 #### Verify HR Schema
+
 ```sql
 -- Check if HR schema exists
 SELECT * FROM HR.EMPLOYEES WHERE ROWNUM <= 5;
@@ -96,9 +106,11 @@ ALTER USER HR IDENTIFIED BY hr ACCOUNT UNLOCK;
 ### Option 2: SQLite (Compatible Version)
 
 #### Prerequisites
+
 - SQLite3 installed
 
 #### Using SQLite Command Line
+
 ```bash
 # Start SQLite
 sqlite3
@@ -111,13 +123,17 @@ sqlite3 pr6.db < pr6_sqlite.sql
 ```
 
 #### Note on SQLite Limitations
+
 SQLite doesn't have all Oracle functions. The script provides:
+
 - **Workarounds** for missing functions (CEIL, FLOOR, LPAD, RPAD)
 - **Sample data** for employee queries
 - **Notes** on functions requiring extensions (SQRT, EXP, POWER)
 
 #### SQLite Math Extensions
+
 For full numeric function support, load the math extension:
+
 ```bash
 # If you have the math extension compiled
 sqlite> .load ./math
@@ -127,6 +143,7 @@ sqlite> SELECT SQRT(81);
 ## Key Differences Between Oracle and SQLite
 
 ### Available in Both
+
 ```sql
 -- These work in both Oracle and SQLite
 ABS(n)              ✓
@@ -142,6 +159,7 @@ INSTR(str, substr)  ✓
 ```
 
 ### Oracle Only
+
 ```sql
 -- These require workarounds in SQLite
 CEIL(n)             Oracle: Built-in | SQLite: Use CASE + CAST
@@ -158,6 +176,7 @@ ASCII(chr)          Oracle: Built-in | SQLite: Use UNICODE()
 ```
 
 ### SQLite Workarounds Example
+
 ```sql
 -- Oracle CEIL
 SELECT CEIL(25.4) FROM DUAL;
@@ -181,51 +200,60 @@ SELECT SUBSTR('##########', 1, 10 - LENGTH('hello')) || 'hello';
 ### Numeric Functions
 
 **ABS(n)** - Returns absolute value
+
 ```sql
 ABS(-15) → 15
 ABS(15) → 15
 ```
 
 **CEIL(n)** - Smallest integer ≥ n
+
 ```sql
 CEIL(27.1) → 28
 CEIL(-27.1) → -27
 ```
 
 **FLOOR(n)** - Largest integer ≤ n
+
 ```sql
 FLOOR(27.9) → 27
 FLOOR(-27.1) → -28
 ```
 
 **ROUND(n, d)** - Round to d decimal places
+
 ```sql
 ROUND(182.284, 1) → 182.3
 ROUND(182.284, -2) → 200
 ```
 
 **TRUNC(n, d)** - Truncate to d decimal places
+
 ```sql
 TRUNC(182.284, 1) → 182.2
 TRUNC(182.284, -2) → 100
 ```
 
 **MOD(m, n)** - Remainder of m/n
+
 ```sql
 MOD(16, 5) → 1
 ```
 
 **POWER(m, n)** - m raised to power n
+
 ```sql
 POWER(3, 4) → 81
 ```
 
 **SQRT(n)** - Square root
+
 ```sql
 SQRT(81) → 9
 ```
 
 **EXP(n)** - e^n (e ≈ 2.71828)
+
 ```sql
 EXP(1) → 2.71828
 EXP(4) → 54.5982
@@ -234,56 +262,66 @@ EXP(4) → 54.5982
 ### Character Functions
 
 **UPPER(str)** / **LOWER(str)** - Change case
+
 ```sql
 UPPER('hello') → 'HELLO'
 LOWER('HELLO') → 'hello'
 ```
 
 **INITCAP(str)** - Capitalize first letter of each word
+
 ```sql
 INITCAP('hello world') → 'Hello World'
 ```
 
 **LENGTH(str)** - String length
+
 ```sql
 LENGTH('Computer') → 8
 ```
 
 **SUBSTR(str, pos, len)** - Extract substring
+
 ```sql
 SUBSTR('Computer', 1, 4) → 'Comp'
 SUBSTR('Computer', 5) → 'uter'
 ```
 
 **INSTR(str, substr)** - Find position
+
 ```sql
 INSTR('Database', 'base') → 5
 ```
 
 **REPLACE(str, old, new)** - Replace all occurrences
+
 ```sql
 REPLACE('Hello World', 'World', 'SQLite') → 'Hello SQLite'
 ```
 
 **LTRIM(str, chars)** / **RTRIM(str, chars)** - Trim characters
+
 ```sql
 LTRIM('000123', '0') → '123'
 RTRIM('Tech123', '123') → 'Tech'
 ```
 
 **LPAD(str, n, pad)** / **RPAD(str, n, pad)** - Pad string
+
 ```sql
 LPAD('hello', 10, '#') → '#####hello'
 RPAD('hello', 10, '*') → 'hello*****'
 ```
 
 **ASCII(chr)** - ASCII code
+
 ```sql
 ASCII('A') → 65
 ASCII('a') → 97
 ```
 
 **TRANSLATE(str, from, to)** - Character-by-character replacement
+
 ```sql
 TRANSLATE('COMPUTER', 'COMPU', 'HEA') → 'HEATER'
 ```
@@ -308,6 +346,7 @@ CREATE TEMP TABLE employees_sample (
 ## Common Use Cases
 
 ### Data Cleaning
+
 ```sql
 -- Remove leading/trailing spaces
 SELECT TRIM(first_name) FROM employees;
@@ -320,6 +359,7 @@ SELECT SUBSTR(email, INSTR(email, '@') + 1) FROM employees;
 ```
 
 ### Data Formatting
+
 ```sql
 -- Format salary
 SELECT ROUND(salary, 2) FROM employees;
@@ -332,6 +372,7 @@ SELECT first_name || ' ' || last_name FROM employees;
 ```
 
 ### Data Validation
+
 ```sql
 -- Check string length
 SELECT * FROM employees WHERE LENGTH(phone_number) = 12;
@@ -343,12 +384,14 @@ SELECT * FROM employees WHERE INSTR(email, '@') > 0;
 ## Tips
 
 ### For Oracle
+
 - Always use `FROM DUAL` for queries without tables
 - HR schema is pre-installed but may be locked
 - Test complex functions with simple examples first
 - Use `DESCRIBE HR.EMPLOYEES` to see table structure
 
 ### For SQLite
+
 - No `FROM DUAL` needed - just `SELECT expression;`
 - Create sample data for testing employee queries
 - Some functions require math extensions
@@ -358,6 +401,7 @@ SELECT * FROM employees WHERE INSTR(email, '@') > 0;
 ## Assessment Criteria
 
 According to lab manual:
+
 - Correct query execution: 18-20 marks (Excellent)
 - Execution with guidance: 13-17 marks (Good)
 - Incorrect output: 7-12 marks (Satisfactory)
@@ -366,6 +410,7 @@ According to lab manual:
 ## Expected Outcomes
 
 After completing this practical, you should be able to:
+
 1. Use numeric functions for calculations
 2. Manipulate strings using character functions
 3. Format data for display
@@ -378,17 +423,23 @@ After completing this practical, you should be able to:
 ## Common Errors and Solutions
 
 ### Oracle
+
 **Error**: "table or view does not exist"
+
 - **Solution**: Ensure HR schema is unlocked and accessible
 
 **Error**: "invalid number"  
+
 - **Solution**: Check data types in function arguments
 
 ### SQLite
+
 **Warning**: "no such function: CEIL"
+
 - **Solution**: Use the CASE-based workaround provided
 
 **Warning**: "no such function: POWER"
+
 - **Solution**: Use multiplication or load math extension
 
 ## Resources

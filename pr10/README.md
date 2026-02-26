@@ -3,6 +3,7 @@
 Implementation of Database Views in Oracle and SQLite.
 
 ## Files
+
 - `pr10.sql` - Oracle version
 - `pr10_sqlite.sql` - SQLite version
 
@@ -11,6 +12,7 @@ Implementation of Database Views in Oracle and SQLite.
 A **view** is a virtual table based on the result set of a SQL query. It contains rows and columns from one or more tables, but doesn't store data itself.
 
 ### Benefits:
+
 - Simplifies complex queries
 - Provides data abstraction layer
 - Enhances security by restricting access to specific columns/rows
@@ -19,9 +21,11 @@ A **view** is a virtual table based on the result set of a SQL query. It contain
 ## View Operations
 
 ### 1. CREATE VIEW
+
 Creates a new view.
 
 **Oracle:**
+
 ```sql
 CREATE OR REPLACE VIEW view_name AS
 SELECT column1, column2
@@ -30,6 +34,7 @@ WHERE condition;
 ```
 
 **SQLite:**
+
 ```sql
 DROP VIEW IF EXISTS view_name;  -- No CREATE OR REPLACE in SQLite
 CREATE VIEW view_name AS
@@ -39,6 +44,7 @@ WHERE condition;
 ```
 
 ### 2. ALTER VIEW
+
 Modifies an existing view's definition.
 
 | Database | Support | Method |
@@ -47,6 +53,7 @@ Modifies an existing view's definition.
 | SQLite | ❌ Not supported | Must `DROP VIEW` and recreate |
 
 **Oracle:**
+
 ```sql
 CREATE OR REPLACE VIEW employee_info AS
 SELECT employee_id, first_name, last_name, salary, hire_date  -- Added hire_date
@@ -54,6 +61,7 @@ FROM employees;
 ```
 
 **SQLite:**
+
 ```sql
 DROP VIEW IF EXISTS employee_info;
 CREATE VIEW employee_info AS
@@ -62,9 +70,11 @@ FROM employees;
 ```
 
 ### 3. DROP VIEW
+
 Removes a view from the database.
 
 **Both Oracle and SQLite:**
+
 ```sql
 DROP VIEW view_name;
 
@@ -91,6 +101,7 @@ DROP VIEW IF EXISTS view_name;
 ### Oracle-Only Features
 
 #### WITH CHECK OPTION
+
 Ensures INSERT/UPDATE operations through the view satisfy the WHERE clause.
 
 ```sql
@@ -105,6 +116,7 @@ WITH CHECK OPTION CONSTRAINT dept_50_check;
 ```
 
 #### WITH READ ONLY
+
 Prevents any DML operations through the view.
 
 ```sql
@@ -119,6 +131,7 @@ WITH READ ONLY;
 ```
 
 #### FORCE Option
+
 Creates view even if base tables don't exist.
 
 ```sql
@@ -129,6 +142,7 @@ SELECT * FROM nonexistent_table;
 ## View Types
 
 ### 1. Simple View
+
 - Based on single table
 - No aggregate functions
 - Usually updatable
@@ -141,6 +155,7 @@ WHERE department_id = 50;
 ```
 
 ### 2. Complex View
+
 - Multiple tables (JOINs)
 - Aggregate functions
 - GROUP BY clause
@@ -155,6 +170,7 @@ GROUP BY d.department_name;
 ```
 
 ### 3. Inline View (Subquery in FROM clause)
+
 - Temporary view within a single query
 - Not stored in database
 
@@ -171,6 +187,7 @@ SELECT * FROM (
 A view is updatable if it allows INSERT, UPDATE, and DELETE operations.
 
 ### Oracle Requirements:
+
 - No DISTINCT keyword
 - No aggregate functions (COUNT, SUM, AVG, etc.)
 - No GROUP BY or HAVING clause
@@ -179,6 +196,7 @@ A view is updatable if it allows INSERT, UPDATE, and DELETE operations.
 - If multiple tables, key-preserved table must be updateable
 
 ### SQLite Requirements:
+
 - Must be based on single table
 - No DISTINCT, GROUP BY, HAVING
 - No aggregate functions
@@ -188,6 +206,7 @@ A view is updatable if it allows INSERT, UPDATE, and DELETE operations.
 ## Lab Manual Queries
 
 ### Query 1: Create employee_info View
+
 ```sql
 CREATE VIEW employee_info AS
 SELECT E.FIRST_NAME, E.LAST_NAME, J.JOB_TITLE, D.DEPARTMENT_NAME, E.SALARY
@@ -197,7 +216,9 @@ LEFT JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
 ```
 
 ### Query 2: Add hire_date Column
+
 Oracle:
+
 ```sql
 CREATE OR REPLACE VIEW employee_info AS
 SELECT E.FIRST_NAME, E.LAST_NAME, J.JOB_TITLE, D.DEPARTMENT_NAME, E.SALARY, E.HIRE_DATE
@@ -207,6 +228,7 @@ LEFT JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
 ```
 
 SQLite:
+
 ```sql
 DROP VIEW IF EXISTS employee_info;
 CREATE VIEW employee_info AS
@@ -217,6 +239,7 @@ LEFT JOIN DEPARTMENTS D ON E.DEPARTMENT_ID = D.DEPARTMENT_ID;
 ```
 
 ### Query 3: Filter for Salary > $50,000
+
 ```sql
 -- Oracle: CREATE OR REPLACE
 -- SQLite: DROP VIEW IF EXISTS then CREATE
@@ -229,6 +252,7 @@ WHERE E.SALARY > 50000;
 ```
 
 ### Query 4: Create my_view for Department 20
+
 ```sql
 CREATE VIEW my_view AS
 SELECT E.EMPLOYEE_ID, E.FIRST_NAME, E.LAST_NAME, E.JOB_ID, E.SALARY
@@ -237,7 +261,9 @@ WHERE E.DEPARTMENT_ID = 20;
 ```
 
 ### Query 5: Alter my_view for Department 30
+
 Oracle:
+
 ```sql
 CREATE OR REPLACE VIEW my_view AS
 SELECT E.EMPLOYEE_ID, E.FIRST_NAME, E.LAST_NAME, E.JOB_ID, E.SALARY
@@ -246,6 +272,7 @@ WHERE E.DEPARTMENT_ID = 30;
 ```
 
 SQLite:
+
 ```sql
 DROP VIEW IF EXISTS my_view;
 CREATE VIEW my_view AS
@@ -255,6 +282,7 @@ WHERE E.DEPARTMENT_ID = 30;
 ```
 
 ### Query 6: Drop my_view
+
 ```sql
 DROP VIEW my_view;
 
@@ -265,12 +293,14 @@ DROP VIEW IF EXISTS my_view;
 ## Usage
 
 ### Oracle
+
 ```bash
 sqlplus username/password@database
 @pr10.sql
 ```
 
 ### SQLite
+
 ```bash
 sqlite3 test_pr10.db < pr10_sqlite.sql
 ```
@@ -278,6 +308,7 @@ sqlite3 test_pr10.db < pr10_sqlite.sql
 ## View Metadata
 
 ### Oracle
+
 ```sql
 -- View all your views
 SELECT view_name, text_length, read_only
@@ -288,6 +319,7 @@ SELECT text FROM USER_VIEWS WHERE view_name = 'EMPLOYEE_INFO';
 ```
 
 ### SQLite
+
 ```sql
 -- View all views
 SELECT name, sql FROM sqlite_master WHERE type = 'view';
@@ -299,17 +331,21 @@ SELECT sql FROM sqlite_master WHERE type = 'view' AND name = 'employee_info';
 ## Troubleshooting
 
 ### "view does not exist"
+
 - Check spelling and case sensitivity
 - Verify the view was created successfully
 - Use `IF EXISTS` clause when dropping
 
 ### "cannot modify column in view" (Oracle)
+
 - View must be updatable (see requirements above)
 - Check if view has WITH READ ONLY clause
 
 ### "cannot INSERT/UPDATE view" (SQLite)
+
 - Ensure view is based on single table
 - Remove aggregate functions, GROUP BY, JOIN from view definition
 
 ### "CREATE OR REPLACE not supported" (SQLite)
+
 - Use `DROP VIEW IF EXISTS` followed by `CREATE VIEW`

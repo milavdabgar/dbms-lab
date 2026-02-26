@@ -3,12 +3,14 @@
 Implementation of User Management and DCL commands - **Oracle Only**.
 
 ## Files
+
 - `pr11.sql` - Oracle version
 - **No SQLite version** - SQLite does not have user management
 
 ## ⚠️ Important Note
 
 **This practical is Oracle-exclusive.** SQLite does not have a user management system. In SQLite:
+
 - There are no users or roles
 - There is no authentication system
 - File-level permissions (OS-level) control access
@@ -16,6 +18,7 @@ Implementation of User Management and DCL commands - **Oracle Only**.
 - Everyone who can access the database file has full access
 
 If you're using SQLite for learning, you can:
+
 1. Study the Oracle syntax for understanding concepts
 2. Practice on Oracle Database (XE recommended for students)
 3. Use MySQL/PostgreSQL as alternatives (both support user management)
@@ -23,6 +26,7 @@ If you're using SQLite for learning, you can:
 ## User Management Commands
 
 ### 1. CREATE USER
+
 Creates a new database user account.
 
 ```sql
@@ -35,6 +39,7 @@ QUOTA 50M ON users;
 ```
 
 ### 2. ALTER USER
+
 Modifies user properties.
 
 ```sql
@@ -52,6 +57,7 @@ ALTER USER username PASSWORD EXPIRE;
 ```
 
 ### 3. DROP USER
+
 Removes a user from the database.
 
 ```sql
@@ -64,9 +70,11 @@ DROP USER username CASCADE;
 ## DCL Commands
 
 ### GRANT Command
+
 Grants privileges or roles to users.
 
 **System Privileges:**
+
 ```sql
 GRANT CREATE SESSION TO username;          -- Allow login
 GRANT CREATE TABLE TO username;            -- Allow creating tables
@@ -78,6 +86,7 @@ GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW TO username;
 ```
 
 **Object Privileges:**
+
 ```sql
 -- Grant on table:
 GRANT SELECT, INSERT ON table_name TO username;
@@ -91,6 +100,7 @@ GRANT SELECT ON table_name TO username WITH GRANT OPTION;
 ```
 
 **Roles:**
+
 ```sql
 -- Grant predefined roles:
 GRANT CONNECT TO username;                 -- Basic connection privileges
@@ -102,15 +112,18 @@ GRANT SELECT ON table_name TO PUBLIC;
 ```
 
 ### REVOKE Command
+
 Removes privileges or roles from users.
 
 **System Privileges:**
+
 ```sql
 REVOKE CREATE TABLE FROM username;
 REVOKE CREATE SESSION, CREATE VIEW FROM username;
 ```
 
 **Object Privileges:**
+
 ```sql
 REVOKE SELECT, INSERT ON table_name FROM username;
 REVOKE ALL ON table_name FROM username;
@@ -120,6 +133,7 @@ REVOKE UPDATE (column1, column2) ON table_name FROM username;
 ```
 
 **Roles:**
+
 ```sql
 REVOKE CONNECT FROM username;
 REVOKE RESOURCE FROM username;
@@ -128,7 +142,9 @@ REVOKE RESOURCE FROM username;
 ## Roles
 
 ### What is a Role?
+
 A **role** is a named group of related privileges. Instead of granting multiple privileges individually to each user, you can:
+
 1. Create a role
 2. Grant privileges to the role
 3. Grant the role to users
@@ -166,6 +182,7 @@ DROP ROLE developer_role;
 ## Privilege Types
 
 ### System Privileges
+
 Control database-level operations.
 
 | Privilege | Allows User To |
@@ -182,6 +199,7 @@ Control database-level operations.
 | GRANT ANY PRIVILEGE | Grant any system privilege |
 
 ### Object Privileges
+
 Control access to specific database objects.
 
 | Privilege | Object Types | Description |
@@ -198,6 +216,7 @@ Control access to specific database objects.
 ## Lab Manual Exercises
 
 ### Exercise 1: Create User and Grant Basic Access
+
 ```sql
 -- Create user:
 CREATE USER james IDENTIFIED BY bob123;
@@ -207,21 +226,25 @@ GRANT CREATE SESSION, CREATE TABLE, CREATE VIEW TO james;
 ```
 
 ### Exercise 2: Grant All Privileges on Employees Table
+
 ```sql
 GRANT ALL ON employees TO james;
 ```
 
 ### Exercise 3: Grant Some Privileges on Departments Table
+
 ```sql
 GRANT SELECT, INSERT, UPDATE ON departments TO james;
 ```
 
 ### Exercise 4: Revoke All Privileges
+
 ```sql
 REVOKE ALL ON employees FROM james;
 ```
 
 ### Exercise 5: Revoke Some Privileges
+
 ```sql
 REVOKE INSERT, UPDATE ON departments FROM james;
 ```
@@ -229,6 +252,7 @@ REVOKE INSERT, UPDATE ON departments FROM james;
 ## Viewing Privileges
 
 ### View System Privileges
+
 ```sql
 -- Your own privileges:
 SELECT * FROM USER_SYS_PRIVS;
@@ -238,6 +262,7 @@ SELECT * FROM DBA_SYS_PRIVS WHERE GRANTEE = 'JAMES';
 ```
 
 ### View Object Privileges
+
 ```sql
 -- Your own privileges:
 SELECT * FROM USER_TAB_PRIVS;
@@ -249,6 +274,7 @@ WHERE GRANTEE = 'JAMES';
 ```
 
 ### View Role Assignments
+
 ```sql
 -- Your own roles:
 SELECT * FROM USER_ROLE_PRIVS;
@@ -262,6 +288,7 @@ WHERE GRANTEE = 'JAMES';
 ## Usage
 
 ### Oracle
+
 ```bash
 # Connect as admin (SYSDBA):
 sqlplus sys/password@database as sysdba
@@ -288,6 +315,7 @@ sqlplus james/bob123@database
 If you need user management for learning:
 
 ### MySQL
+
 ```sql
 -- Similar syntax to Oracle:
 CREATE USER 'username'@'localhost' IDENTIFIED BY 'password';
@@ -297,6 +325,7 @@ DROP USER 'username'@'localhost';
 ```
 
 ### PostgreSQL
+
 ```sql
 -- Similar conceptual model:
 CREATE USER username WITH PASSWORD 'password';
@@ -308,19 +337,23 @@ DROP USER username;
 ## Troubleshooting
 
 ### "insufficient privileges"
+
 - Connect with a user that has GRANT privileges
 - For creating users, need CREATE USER privilege or SYSDBA
 - For granting on objects, must be object owner or have GRANT OPTION
 
 ### "user does not exist"
+
 - Check spelling and case (Oracle stores usernames in uppercase)
 - Verify user was created successfully
 - Query DBA_USERS to list all users
 
 ### "cannot drop user - user is currently connected"
+
 - Disconnect all sessions for that user first
 - Or use `DROP USER username CASCADE` with admin privileges
 
 ### "ORA-01031: insufficient privileges" (when trying to connect)
+
 - User needs at least CREATE SESSION privilege
 - Grant CONNECT role for basic access

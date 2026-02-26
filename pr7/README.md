@@ -10,6 +10,7 @@ Implementation of SQL Conversion Functions, Miscellaneous Functions (DECODE), an
 ## 🎯 Practical Objectives
 
 Implement SQL queries using:
+
 1. **Conversion Functions** - Convert data between types (number, character, date)
 2. **DECODE/CASE** - Conditional logic for IF-THEN-ELSE operations
 3. **Group Functions** - Aggregate calculations (AVG, MIN, MAX, SUM, COUNT)
@@ -90,12 +91,14 @@ sqlite> .read pr7_sqlite.sql
 ### 1. TO_NUMBER / CAST
 
 **Oracle:**
+
 ```sql
 SELECT TO_NUMBER('+01234.78') FROM DUAL;
 -- Result: 1234.78
 ```
 
 **SQLite:**
+
 ```sql
 SELECT CAST('+01234.78' AS REAL);
 -- Result: 1234.78
@@ -104,12 +107,14 @@ SELECT CAST('+01234.78' AS REAL);
 ### 2. TO_CHAR Number Formatting
 
 **Oracle:**
+
 ```sql
 SELECT TO_CHAR(123789, '9,99,999') FROM DUAL;
 -- Result: 1,23,789
 ```
 
 **SQLite:**
+
 ```sql
 SELECT printf('%,d', 123789);
 -- Result: 123,789 (US format)
@@ -119,6 +124,7 @@ SELECT printf('%,d', 123789);
 ### 3. Date Formatting
 
 **Oracle:**
+
 ```sql
 SELECT TO_CHAR(HIRE_DATE, 'Day, DDth Mon, YYYY') 
 FROM HR.EMPLOYEES;
@@ -126,6 +132,7 @@ FROM HR.EMPLOYEES;
 ```
 
 **SQLite:**
+
 ```sql
 SELECT strftime('%A, %d %b, %Y', HIRE_DATE) 
 FROM employees_sample;
@@ -136,6 +143,7 @@ FROM employees_sample;
 ### 4. DECODE vs CASE
 
 **Oracle:**
+
 ```sql
 SELECT DECODE('MAX', 
               'MAX', 'this is maximum',
@@ -146,6 +154,7 @@ FROM DUAL;
 ```
 
 **SQLite:**
+
 ```sql
 SELECT CASE 'MAX'
            WHEN 'MAX' THEN 'this is maximum'
@@ -158,6 +167,7 @@ SELECT CASE 'MAX'
 ### 5. Group Functions
 
 **Both Oracle and SQLite (Same syntax):**
+
 ```sql
 -- Maximum salary
 SELECT MAX(SALARY) FROM EMPLOYEES;
@@ -216,12 +226,14 @@ SELECT COUNT(COMMISSION_PCT) FROM EMPLOYEES;  -- Non-NULL only
 ### Oracle-Specific
 
 1. **DUAL Table** - Required for standalone queries:
+
    ```sql
    SELECT TO_NUMBER('123') FROM DUAL;  -- ✓ Correct
    SELECT TO_NUMBER('123');            -- ✗ Error
    ```
 
 2. **Date Formats** - Case-insensitive but conventional uppercase:
+
    ```sql
    TO_CHAR(date, 'DD-MON-YYYY')  -- Recommended
    TO_CHAR(date, 'dd-mon-yyyy')  -- Works but not standard
@@ -236,11 +248,13 @@ SELECT COUNT(COMMISSION_PCT) FROM EMPLOYEES;  -- Non-NULL only
 ### SQLite-Specific
 
 1. **No DUAL Table** - Not needed:
+
    ```sql
    SELECT CAST('123' AS INTEGER);  -- ✓ Works directly
    ```
 
 2. **Date Storage** - Use TEXT in ISO 8601 format:
+
    ```sql
    '2003-09-17'           -- ✓ Correct (YYYY-MM-DD)
    '17-SEP-2003'          -- ✗ Won't work with date functions
@@ -254,6 +268,7 @@ SELECT COUNT(COMMISSION_PCT) FROM EMPLOYEES;  -- Non-NULL only
    - `%08d` - Zero-padded integer (width 8)
 
 4. **No Ordinal Suffixes** - SQLite strftime doesn't support 'th', 'st', 'nd', 'rd':
+
    ```sql
    -- Oracle: 17th Jun
    -- SQLite: 17 Jun (ordinal must be added manually)
@@ -283,6 +298,7 @@ sqlite3 test_conversions.db "SELECT MAX(SALARY), MIN(SALARY) FROM employees_samp
 ### Oracle Errors
 
 **ORA-01722: invalid number**
+
 ```sql
 -- Check: Ensure string contains only valid number characters
 SELECT TO_NUMBER('+123.45') FROM DUAL;  -- ✓
@@ -290,6 +306,7 @@ SELECT TO_NUMBER('123ABC') FROM DUAL;   -- ✗ Error
 ```
 
 **ORA-01843: not a valid month**
+
 ```sql
 -- Check: Date format must match input string
 SELECT TO_DATE('17-09-2003', 'DD-MM-YYYY') FROM DUAL;  -- ✓
@@ -299,12 +316,14 @@ SELECT TO_DATE('17-SEP-2003', 'DD-MM-YYYY') FROM DUAL; -- ✗ Error
 ### SQLite Errors
 
 **No such function: TO_NUMBER**
+
 ```sql
 -- Use CAST instead
 SELECT CAST('123' AS INTEGER);  -- ✓
 ```
 
 **Date functions not working**
+
 ```sql
 -- Ensure dates are in YYYY-MM-DD format
 SELECT date('2003-09-17');   -- ✓
@@ -314,6 +333,7 @@ SELECT date('17-SEP-2003');  -- ✗ Returns NULL
 ## 📚 Learning Outcomes
 
 After completing this practical, you should be able to:
+
 - ✅ Convert between data types (number, character, date)
 - ✅ Format numbers with custom patterns
 - ✅ Format dates in various display formats

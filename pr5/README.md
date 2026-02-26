@@ -3,17 +3,20 @@
 This directory contains solutions for Practical No. 5 - Implementing SQL queries using Date functions.
 
 ## Objective
+
 To implement SQL queries using various date functions like ADD_MONTHS, MONTHS_BETWEEN, LAST_DAY, NEXT_DAY, ROUND, and TRUNC.
 
 ## Files
 
 ### Oracle Database Version
+
 - **`pr5.sql`** - Complete SQL queries for Oracle Database
   - Uses Oracle-specific date functions
   - Requires Oracle SQL*Plus, SQL Developer, or Oracle Live SQL
   - Uses the `DUAL` table for demonstrations
 
 ### SQLite Database Version
+
 - **`pr5_sqlite.sql`** - SQLite-compatible queries
   - Uses SQLite's date/time functions
   - Works with any SQLite database or online SQLite runners
@@ -36,10 +39,12 @@ Both versions implement the following 7 required queries:
 ### Option 1: Oracle Database (As per Lab Manual)
 
 #### Prerequisites
+
 - Oracle Database (11g, 12c, 18c, 19c, or 21c)
 - Oracle SQL*Plus or SQL Developer installed
 
 #### Using SQL*Plus (Command Line)
+
 ```bash
 # Connect to Oracle Database
 sqlplus username/password@database
@@ -52,12 +57,14 @@ SQL> SELECT ADD_MONTHS(TO_DATE('01-06-19', 'DD-MM-YY'), 4) FROM DUAL;
 ```
 
 #### Using SQL Developer (GUI)
+
 1. Open Oracle SQL Developer
 2. Connect to your database
 3. Open `pr5.sql` file
 4. Click "Run Script" (F5) or execute queries individually (Ctrl+Enter)
 
 #### Using Oracle Live SQL (Online - Free)
+
 1. Go to: https://livesql.oracle.com/
 2. Sign in with Oracle account (free)
 3. Copy and paste queries from `pr5.sql`
@@ -66,9 +73,11 @@ SQL> SELECT ADD_MONTHS(TO_DATE('01-06-19', 'DD-MM-YY'), 4) FROM DUAL;
 ### Option 2: SQLite (Compatible Version)
 
 #### Prerequisites
+
 - SQLite3 installed on your system
 
 #### Using SQLite Command Line
+
 ```bash
 # Start SQLite (no database needed for date functions)
 sqlite3
@@ -81,6 +90,7 @@ sqlite> SELECT date('2019-06-01', '+4 months') AS "Date After 4 Months";
 ```
 
 #### Using Online SQLite Runners
+
 1. Go to any online SQLite runner:
    - https://sqliteonline.com/
    - https://www.db-fiddle.com/ (select SQLite)
@@ -89,6 +99,7 @@ sqlite> SELECT date('2019-06-01', '+4 months') AS "Date After 4 Months";
 3. Run queries directly
 
 #### Using DB Browser for SQLite (GUI)
+
 1. Open DB Browser for SQLite
 2. Click "Execute SQL" tab
 3. Copy and paste queries from `pr5_sqlite.sql`
@@ -97,6 +108,7 @@ sqlite> SELECT date('2019-06-01', '+4 months') AS "Date After 4 Months";
 ## Key Differences Between Oracle and SQLite
 
 ### Oracle Functions
+
 ```sql
 -- Oracle uses specific date functions
 ADD_MONTHS(date, n)
@@ -110,6 +122,7 @@ DUAL table                        -- Dummy table for SELECT
 ```
 
 ### SQLite Equivalents
+
 ```sql
 -- SQLite uses date() with modifiers
 date('2019-06-01', '+4 months')   -- Add months
@@ -152,6 +165,7 @@ No DUAL table needed              -- Direct SELECT
 ## Additional Practice
 
 Both SQL files include additional practice queries covering:
+
 - Age calculations
 - Finding specific days of the week
 - Date formatting
@@ -169,12 +183,14 @@ Both SQL files include additional practice queries covering:
 ## Tips
 
 ### For Oracle
+
 - Always use `TO_DATE()` for date string conversion
 - Specify format model in `TO_DATE()` to avoid errors
 - Use `SYSDATE` for current date/time
 - Test with `DUAL` table for quick calculations
 
 ### For SQLite
+
 - SQLite stores dates as text, real, or integer
 - Use ISO format (YYYY-MM-DD) for best compatibility
 - `date('now')` gives current date
@@ -184,6 +200,7 @@ Both SQL files include additional practice queries covering:
 ## Assessment Criteria
 
 According to lab manual:
+
 - Correct query execution: 18-20 marks (Excellent)
 - Execution with guidance: 13-17 marks (Good)
 - Incorrect output: 7-12 marks (Satisfactory)
@@ -192,6 +209,7 @@ According to lab manual:
 ## Expected Outcomes
 
 After completing this practical, you should be able to:
+
 1. Use date functions to manipulate and calculate dates
 2. Add or subtract time periods from dates
 3. Calculate differences between dates
