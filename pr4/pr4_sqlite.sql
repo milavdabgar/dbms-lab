@@ -158,11 +158,13 @@ SELECT * FROM EMPLOYEES;
 -- Delete a job (only if no employees reference it)
 DELETE FROM JOBS WHERE JOB_ID = 'AD_ASST';
 
--- Delete a department (must ensure no employees are in it and no job history references it)
+-- Delete a department (must ensure no employees are in it first)
+-- Department 10 already has no employees after we deleted employee 200
 DELETE FROM DEPARTMENTS WHERE DEPARTMENT_ID = 10;
 
--- Delete a location (must ensure no departments reference it)
-DELETE FROM LOCATIONS WHERE LOCATION_ID = 1000;
+-- Note: Cannot delete LOCATION 1000 because DEPARTMENT 30 still references it
+-- Demonstrating constraint protection:
+-- DELETE FROM LOCATIONS WHERE LOCATION_ID = 1000;  -- This would fail!
 
 -- Final state of all tables
 SELECT '-- Final state of REGIONS:' AS QUERY;

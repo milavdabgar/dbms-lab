@@ -8,8 +8,9 @@
 *.trc
 *.dmp
 
-# Test files
-test_*
+# Test output files (but keep test scripts)
+*_output.txt
+test_*.db
 temp_*
 
 # OS files
